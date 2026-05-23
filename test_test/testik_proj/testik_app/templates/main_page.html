@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>Главная страница</title>
+    </head>
+
+    <body>
+        <header>
+            <a href="{% url 'logout' %}">Выйти</a>
+            <a href="{% url 'create_request' %}">
+                <button type="button">Создать заявку</button>
+            </a>
+        </header>
+        <h1>Мои заявки</h1>
+        {% if requests %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>№ заявки</th>
+                        <th>Дата создания</th>
+                        <th>Тип устройства</th>
+                        <th>Модель</th>
+                        <th>Описание проблемы</th>
+                        <th>Статус</th>
+                        <th>Техник</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for request in requests %}
+                    <tr>
+                        <td>{{ request.id }}</td>
+                        <td>{{ request.start_date|date:"d.m.Y" }}</td>
+                        <td>{{ request.tech_type.name }}</td>
+                        <td>{{ request.tech_model }}</td>
+                        <td>{{ request.description }}</td>
+                        <td>
+                            {% if request.status_id == 3 %}
+                                <span>Новая заявка</span>
+                            {% elif request.status_id == 1 %}
+                                <span>В процессе ремонта</span>
+                            {% elif request.status_id == 2 %}
+                                <span>Готова к выдаче</span>
+                            {% else %}
+                                <span>{{ request.status.name }}</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if request.master %}
+                                {{ request.master.fio }}
+                            {% else %}
+                                <span>Не назначен</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div>
+                <p>У вас пока нет заявок</p>
+            </div>
+        {% endif %}
+    </body>
+</html>

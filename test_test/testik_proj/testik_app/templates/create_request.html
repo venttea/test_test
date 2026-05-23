@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>Создание заявки</title>
+    </head>
+
+    <body>
+        <h1>Новая заявка</h1>
+
+        <form method="post">
+            {% csrf_token %}
+
+            <div>
+                <label>Тип устройства:</label>
+                <select name="tech_type" required>
+                    <option value="">Все типы</option>
+                        {% for type in types %}
+                            <option value="{{ type.id }}">{{ type.name }}</option>
+                        {% endfor %}
+                </select>
+            </div>
+
+            <div>
+                <label>Модель устройства:</label>
+                <input type="text" name="tech_model" placeholder="Введите название модели..." required>
+            </div>
+
+            <div>
+                <label>Описание:</label>
+                <input type="text" name="description" placeholder="Опишите проблемы..." required>
+            </div>
+
+            <div>
+                <label>Ваше ФИО:</label>
+                <input type="text" name="fio" placeholder="Введите ваше ФИО" required>
+            </div>
+
+            <div>
+                <label>Номер телефона:</label>
+                <input type="tel" name="phone" placeholder="Введите ваш номер телефона" required>
+            </div>
+
+            <button type="submit">Отправить заявку</button>
+
+            <a href="{% url 'main_page' %}">
+                <button type="button">Отмена</button>
+            </a>
+
+
+        </form>
+    </body>
+
+</html>
